@@ -12,10 +12,10 @@
 WCHAR      g_lpwAppPath[MAX_PATH] = { 0 };
 CHAR       g_lpAppPath[MAX_PATH] = { 0 };
 
-#define LOGINFOFILE	"Log.Info.txt"
-#define LOGWARNFILE	"Log.Warn.txt"
-#define LOGERRFILE	"Log.Err.txt"
-#define LOGFATAL	"Log.Fatl.txt"
+#define LOGINFOFILE	"Log\\Info"
+#define LOGWARNFILE	"Log\\Warn"
+#define LOGERRFILE	"Log\\Err"
+#define LOGFATAL	"Log\\Fatl"
 
 // 全局变量: 
 HINSTANCE hInst;								// 当前实例
@@ -56,11 +56,12 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	executableName[1] = L'\0';
 	wexecutableName[1] = '\0';
 	
-	google::SetLogDestination(google::GLOG_INFO, (std::string((LPCSTR)g_lpwAppPath) + LOGINFOFILE).c_str());
-	google::SetLogDestination(google::GLOG_WARNING, (std::string((LPCSTR)g_lpwAppPath) + LOGWARNFILE).c_str());
-	google::SetLogDestination(google::GLOG_ERROR, (std::string((LPCSTR)g_lpwAppPath) + LOGERRFILE).c_str());
-	google::SetLogDestination(google::GLOG_FATAL, (std::string((LPCSTR)g_lpwAppPath) + LOGFATAL).c_str());
-	LOG(INFO) << "Start...";
+	google::SetLogDestination(google::GLOG_INFO, (std::string((LPCSTR)g_lpAppPath) + LOGINFOFILE).c_str());
+	google::SetLogDestination(google::GLOG_WARNING, (std::string((LPCSTR)g_lpAppPath) + LOGWARNFILE).c_str());
+	google::SetLogDestination(google::GLOG_ERROR, (std::string((LPCSTR)g_lpAppPath) + LOGERRFILE).c_str());
+	google::SetLogDestination(google::GLOG_FATAL, (std::string((LPCSTR)g_lpAppPath) + LOGFATAL).c_str());
+	
+	LOG(INFO) << "\r\n *********** Start... **************";
 
 	// 创建一个system对象.
 	SystemClass* System = new SystemClass;
