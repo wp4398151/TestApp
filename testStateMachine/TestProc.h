@@ -10,6 +10,8 @@ public:
 	TestProc(SystemClass* pSysClass);
 	~TestProc();
 	
+	bool TestPacketParse();
+
 	bool TestWriteUDisk();
 	bool TestWriteSSD();
 	bool TestWriteHDD();

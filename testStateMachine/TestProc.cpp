@@ -84,10 +84,6 @@ void TestProc::TestDx10(HWND hwnd, POINT& ptTargetSize, POINT& ptCapturePicSize,
 	m_Directx10Render.SetWindowRenderTarget(false);
 	m_Directx10Render.Render();
 	m_Directx10Render.CopyFromSwapBackbuffer();
-	
-	//// --------------------- 直接使用交换链进行渲染
-	
-	
 }
 
 void TestProc::CaptureAudio()
@@ -131,6 +127,12 @@ void TestProc::fillContent()
 int TestProc::RangedRand(int range_min, int range_max)
 {
 	return (int)((double)rand() / (RAND_MAX + 1) * (range_max - range_min) + range_min);
+}
+
+// Test Packet Parse Function
+bool TestProc::TestPacketParse()
+{
+	return true;
 }
 
 bool TestProc::TestWriteUDisk()

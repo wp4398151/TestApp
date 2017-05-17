@@ -60,6 +60,9 @@
     <ClInclude Include="CDuplicateOutputDx11.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="PacketParser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -96,6 +99,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CDuplicateOutputDx11.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketParser.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
