@@ -15,6 +15,7 @@ public:
 	CPacketParser();
 	virtual ~CPacketParser();
 
-	bool GetStreamBuffer(, int &cbRead);
+	void ReleaseBuffer(PBYTE ppBuffer);
+	bool GetStreamBuffer(PBYTE* ppBuffer, int &cbRead);
 };
 

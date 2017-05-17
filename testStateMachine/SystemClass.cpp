@@ -322,7 +322,9 @@ void SystemClass::SubWndMessageHandler(HWND hwnd, INT umsg, WPARAM wparam, LPARA
 	}
 	else if (wparam == EIndexCommonCtrl::eCtrlIndex_CaptureAudio)
 	{
+		SendMessage(m_CaptureAudioBtn, WM_SETTEXT, NULL, (LPARAM)L"Capturing ...");
 		m_TestProc.CaptureAudio();
+		SendMessage(m_CaptureAudioBtn, WM_SETTEXT, NULL, (LPARAM)L"×¥È¡ÒôÆµ");
 	}
 	else if (wparam == EIndexCommonCtrl::eCtrlIndex_TestDx10Render)
 	{

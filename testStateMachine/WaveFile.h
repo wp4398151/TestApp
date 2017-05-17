@@ -50,12 +50,14 @@ public:
 	CWaveFile();
 	~CWaveFile();
 	virtual bool WriteSample(PBYTE pSample, UINT cbSize);
+	
 	virtual bool WriteRIFFSize();
 	virtual bool WriteDATASize();
 
 	virtual bool Init(string &strFile, WAVEFORMATEX& rFormat);
 	virtual void FillContent(WAVEFORMATEX& rFormat);
 
+	virtual void ConvertPCM(PBYTE pSampleTarget, PBYTE pSampleSrc, UINT cbSize);
 
 private:
 	WAVE_FILE_STRUCT m_waveContent;

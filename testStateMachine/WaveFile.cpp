@@ -44,7 +44,7 @@ void CWaveFile::FillContent(WAVEFORMATEX& rFormat)
 	//m_waveContent.fmt.wavFormat.wFormatTag = rFormat.wFormatTag;
 	m_waveContent.fmt.wavFormat.wFormatTag = WAVE_FORMAT_PCM;
 	m_waveContent.fmt.wavFormat.wBitsPerSample = rFormat.wBitsPerSample;
-	m_waveContent.fmt.wavFormat.cbSize = rFormat.cbSize;
+	m_waveContent.fmt.wavFormat.cbSize = rFormat.cbSize;//18
 
 	m_waveContent.dataHeader.szDataID[0] = 'd';
 	m_waveContent.dataHeader.szDataID[1] = 'a';
@@ -126,8 +126,18 @@ bool CWaveFile::WriteDATASize()
 	return true;
 }
 
+void CWaveFile::ConvertPCM(PBYTE pSampleTarget, PBYTE pSampleSrc, UINT cbSize)
+{
+	INT cbIntSize = cbSize / 4;
+	for (int i = 0; i < cbIntSize; ++i)
+	{
+		*((INT*)(pSampleTarget+(i * 4))) = *((float*)(pSampleSrc+(i * 4))) * INT_MAX;
+	}
+}
+
 bool CWaveFile::WriteSample(PBYTE pSample, UINT cbSize)
 {
+
 	size_t ret = fwrite(pSample, 1, cbSize, m_pFile);
 	if (cbSize != ret)
 	{

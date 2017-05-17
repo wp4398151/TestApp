@@ -55,6 +55,12 @@ bool CaptureAudioClass::InitFormat()
 		return false;
 	}
 
+	WAVEFORMATEXTENSIBLE* pExtensibleWaveFormat = NULL;
+	if (m_pWaveFormatEx->wFormatTag == WAVE_FORMAT_EXTENSIBLE)
+	{
+		pExtensibleWaveFormat = (WAVEFORMATEXTENSIBLE*)m_pWaveFormatEx;
+	}
+	
 	err = m_mmClient->Initialize(AUDCLNT_SHAREMODE_SHARED, 
 							AUDCLNT_STREAMFLAGS_LOOPBACK,
 								CONVERTMSTO100NANOSEC(5000),  
@@ -131,8 +137,6 @@ bool CaptureAudioClass::InitDevice(EDataFlow deviceType, DWORD deviceFlag)
 							AudioDeviceInfo audioInfo = { wstrID, wstrName };
 							audioInfo.strID = wstrID;
 							audioInfo.strName = wstrName;
-
-
 							m_VectorAudioList.push_back(audioInfo);
 						}
 					}
@@ -167,6 +171,8 @@ bool CaptureAudioClass::InitDevice(EDataFlow deviceType, DWORD deviceFlag)
 	return true;
 }
 
+#include <limits>
+
 bool CaptureAudioClass::DoRecordLoop()
 {
 	UINT dwSleepTimeMS = (m_bufferFrameCount / m_pWaveFormatEx->nSamplesPerSec) * 1000;
@@ -175,7 +181,7 @@ bool CaptureAudioClass::DoRecordLoop()
 	UINT numFrames = 0;
 	UINT nextTime = 0;
 	nextTime = GetTickCount() + dwSleepTimeMS;
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 6; ++i)
 	{
 		curTime = GetTickCount();
 		DOLOG("Sleep: cur:" << curTime << ", nextTime:" << nextTime);
@@ -203,6 +209,7 @@ bool CaptureAudioClass::GetNextBuffer(UINT &numFrames)
 	hRes = m_mmCapture->GetNextPacketSize(&packetLength);
 	PBYTE pData = NULL;
 	PBYTE captureBuffer = NULL;
+	PBYTE pBuffer = (PBYTE)malloc(1024*1024);
 
 	while (packetLength != 0)
 	{
@@ -216,6 +223,7 @@ bool CaptureAudioClass::GetNextBuffer(UINT &numFrames)
 		if (!SUCCEEDED(hRes))
 		{
 			LOG(ERROR) << "m_mmCapture->GetBuffer Failed (" << hRes << ")";
+			if (pBuffer)free(pBuffer);
 			return false;
 		}
 
@@ -226,11 +234,14 @@ bool CaptureAudioClass::GetNextBuffer(UINT &numFrames)
 			//pData = NULL;  // Tell CopyData to write silence.
 		}
 
-		INT bufferSize = numFramesAvailable*m_pWaveFormatEx->wBitsPerSample / 8;
+		INT bufferSize = m_pWaveFormatEx->nChannels*numFramesAvailable*m_pWaveFormatEx->wBitsPerSample / 8;
 
-		if (m_pFile && !m_pFile->WriteSample(pData, bufferSize))
+		m_pFile->ConvertPCM(pBuffer, pData, bufferSize);
+
+		if (m_pFile && !m_pFile->WriteSample(pBuffer, bufferSize))
 		{
 			LOG(ERROR) << "m_pFile->Write Failed " ;
+			if (pBuffer)free(pBuffer);
 			return false;
 		}
 
@@ -239,6 +250,7 @@ bool CaptureAudioClass::GetNextBuffer(UINT &numFrames)
 		if (!SUCCEEDED(hRes))
 		{
 			LOG(ERROR) << "m_mmCapture->ReleaseBuffer Failed ("<<hRes<< ")";
+			if (pBuffer)free(pBuffer);
 			return false;
 		}
 
@@ -246,10 +258,12 @@ bool CaptureAudioClass::GetNextBuffer(UINT &numFrames)
 		if (!SUCCEEDED(hRes))
 		{
 			LOG(ERROR) << "m_mmCapture->ReleaseBuffer Failed ("<<hRes<< ")";
+			if (pBuffer)free(pBuffer);
 			return false;
 		}
 		DOLOG("DebugAudio: NextPacketSize:" << packetLength);
 	}
+	if (pBuffer)free(pBuffer);
 	DOLOG("DebugAudio: packetLength = 0--------------------------------------------------");
 	return true;
 }
