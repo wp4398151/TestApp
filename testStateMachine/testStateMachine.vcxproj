@@ -91,7 +91,9 @@
     <ClInclude Include="CaptureAudio.h" />
     <ClInclude Include="CDuplicateOutputDx11.h" />
     <ClInclude Include="DirectXWindow.h" />
+    <ClInclude Include="InitAttrs.h" />
     <ClInclude Include="InputClass.h" />
+    <ClInclude Include="IUtil.h" />
     <ClInclude Include="IWaveFile.h" />
     <ClInclude Include="NetModule.h" />
     <ClInclude Include="PacketParser.h" />
@@ -101,6 +103,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestProc.h" />
     <ClInclude Include="testStateMachine.h" />
+    <ClInclude Include="WarriorFight.h" />
     <ClInclude Include="WaveFile.h" />
   </ItemGroup>
   <ItemGroup>
@@ -110,7 +113,9 @@
     <ClCompile Include="CaptureAudio.cpp" />
     <ClCompile Include="CDuplicateOutputDx11.cpp" />
     <ClCompile Include="DirectXWindow.cpp" />
+    <ClCompile Include="InitAttrs.cpp" />
     <ClCompile Include="InputClass.cpp" />
+    <ClCompile Include="IUtil.cpp" />
     <ClCompile Include="IWaveFile.cpp" />
     <ClCompile Include="NetModule.cpp" />
     <ClCompile Include="PacketParser.cpp" />
@@ -121,6 +126,7 @@
     <ClCompile Include="SystemClass.cpp" />
     <ClCompile Include="TestProc.cpp" />
     <ClCompile Include="testStateMachine.cpp" />
+    <ClCompile Include="WarriorFight.cpp" />
     <ClCompile Include="WaveFile.cpp" />
   </ItemGroup>
   <ItemGroup>

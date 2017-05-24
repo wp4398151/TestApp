@@ -15,13 +15,12 @@ public:
 	bool TestWriteUDisk();
 	bool TestWriteSSD();
 	bool TestWriteHDD();
-	int RangedRand(int range_min, int range_max);
 	void fillContent();
 
 	void CaptureAudio();
 	void Render();
 	void TestDx10(HWND hwnd, POINT& ptTargetSize, POINT& ptCapturePicSize, RECT &rcClipRect);
-
+	void testGeme(HWND hwndHP1P, HWND hwndHP2P);
 private:	
 	CDirectXWindow m_Directx10Render;
 	SystemClass* m_pSysClass;

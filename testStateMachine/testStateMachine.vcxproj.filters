@@ -63,6 +63,15 @@
     <ClInclude Include="PacketParser.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="IUtil.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="WarriorFight.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="InitAttrs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -102,6 +111,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PacketParser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="IUtil.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WarriorFight.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="InitAttrs.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

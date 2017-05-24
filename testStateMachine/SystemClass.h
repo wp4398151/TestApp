@@ -6,8 +6,9 @@
 #include "NetModule.h"
 #include "TestProc.h"
 #include <string>
+#include "IUtil.h"
 
-class SystemClass
+class SystemClass : public LiteThread<SystemClass>
 {
 public:
 	SystemClass(void);
@@ -22,11 +23,18 @@ public:
 	void KeyHandler();
 	void Quit();
 	void HandleInstant();
-
+	
 	LRESULT MessageHandler(HWND hwnd, INT umsg, WPARAM wparam, LPARAM lparam);
 	void SubWndMessageHandler(HWND hwnd, INT umsg, WPARAM wparam, LPARAM lparam);
+	
+	HWND m_msg_hwnd;
+	INT m_msg_umsg;
+	WPARAM m_msg_wparam;
+	LPARAM m_msg_lparam;
 
 	void testProtoBuf();
+
+	static unsigned __stdcall RunFunc(void* pThis);
 
 private:
 	void InitializeWindows(int&, int&);
@@ -44,6 +52,9 @@ private:
 		eCtrlIndex_indexMonitorEdit,
 		eCtrlIndex_CaptureAudio,	// 抓取音频
 		eCtrlIndex_TestDx10Render,
+		eCtrlIndex_WFTestStart,			// Warrior Fight test start
+		eCtrlIndex_WFP1HP,				// Warrior Fight HP of P1
+		eCtrlIndex_WFP2HP,				// Warrior Fight HP of P2
 	};
 
 	HWND m_Test1Btn;	
@@ -55,7 +66,9 @@ private:
 	HWND m_TestDx10RenderBtn;	
 	HWND m_IPEdit;				// 链接IP;
 	HFONT m_hFont;
-
+	HWND m_WFP1HP;				
+	HWND m_WFP2HP;
+	HWND m_WFStart;				
 	InputClass* m_Input;		// 键盘输入
 
 	LPCWSTR m_applicationName;

@@ -6,11 +6,11 @@
 #include "SystemClass.h"
 #include <shellapi.h>
 #include <string>
+#include "IUtil.h"
 
 #define MAX_LOADSTRING 100
 
-WCHAR      g_lpwAppPath[MAX_PATH] = { 0 };
-CHAR       g_lpAppPath[MAX_PATH] = { 0 };
+
 
 #define LOGINFOFILE	"Log\\Info"
 #define LOGWARNFILE	"Log\\Warn"
@@ -49,17 +49,12 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	LPWSTR* arrArgs = CommandLineToArgvW(lpwCommandLine, &argc);
 	google::InitGoogleLogging(lpCommandLineBuf);
 	
-	GetModuleFileNameW(NULL, g_lpwAppPath, MAX_PATH);
-	GetModuleFileNameA(NULL, g_lpAppPath, MAX_PATH);
-	WCHAR* wexecutableName = wcsrchr(g_lpwAppPath, L'\\');
-	CHAR* executableName = strrchr(g_lpAppPath, '\\');
-	executableName[1] = L'\0';
-	wexecutableName[1] = '\0';
+	IUtil::Init();
 	
-	google::SetLogDestination(google::GLOG_INFO, (std::string((LPCSTR)g_lpAppPath) + LOGINFOFILE).c_str());
-	google::SetLogDestination(google::GLOG_WARNING, (std::string((LPCSTR)g_lpAppPath) + LOGWARNFILE).c_str());
-	google::SetLogDestination(google::GLOG_ERROR, (std::string((LPCSTR)g_lpAppPath) + LOGERRFILE).c_str());
-	google::SetLogDestination(google::GLOG_FATAL, (std::string((LPCSTR)g_lpAppPath) + LOGFATAL).c_str());
+	google::SetLogDestination(google::GLOG_INFO, (std::string((LPCSTR)IUtil::GetAppPathA()) + LOGINFOFILE).c_str());
+	google::SetLogDestination(google::GLOG_WARNING, (std::string((LPCSTR)IUtil::GetAppPathA()) + LOGWARNFILE).c_str());
+	google::SetLogDestination(google::GLOG_ERROR, (std::string((LPCSTR)IUtil::GetAppPathA()) + LOGERRFILE).c_str());
+	google::SetLogDestination(google::GLOG_FATAL, (std::string((LPCSTR)IUtil::GetAppPathA()) + LOGFATAL).c_str());
 	
 	LOG(INFO) << "\r\n *********** Start... **************";
 

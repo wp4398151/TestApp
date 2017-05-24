@@ -2,7 +2,7 @@
 #include "SystemClass.h"
 #include "addressbook.pb.h"
 
-SystemClass::SystemClass(void) :m_TestProc(this)
+SystemClass::SystemClass(void) :LiteThread<SystemClass>(this), m_TestProc(this)
 {
 	m_applicationName = NULL;
 	m_hinstance = NULL;
@@ -27,7 +27,7 @@ SystemClass::SystemClass(void) :m_TestProc(this)
 	m_hFont = CreateFontIndirectW(&LogFont);
 }
 
-SystemClass::SystemClass(const SystemClass &) : m_TestProc(this)
+SystemClass::SystemClass(const SystemClass &) :LiteThread<SystemClass>(this), m_TestProc(this)
 {
 
 }
@@ -242,6 +242,19 @@ VOID SystemClass::CreateControls()
 		(icol++) * (contrlWidth + marginW), irow*(marginH + contrlHeight), contrlWidth, contrlHeight, m_hwnd,
 		(HMENU)(EIndexCommonCtrl::eCtrlIndex_TestDx10Render), m_hinstance, NULL);
 
+	m_WFP1HP = CreateWindow(TEXT("edit"), TEXT("P1"),
+		WS_CHILD | WS_VISIBLE | WS_BORDER,
+		(icol++) * (contrlWidth + marginW), irow*(marginH + contrlHeight), contrlWidth, contrlHeight, m_hwnd,
+		(HMENU)(EIndexCommonCtrl::eCtrlIndex_WFP1HP), m_hinstance, NULL);
+	m_WFP2HP = CreateWindow(TEXT("edit"), TEXT("P2"),
+		WS_CHILD | WS_VISIBLE | WS_BORDER,
+		(icol++) * (contrlWidth + marginW), irow*(marginH + contrlHeight), contrlWidth, contrlHeight, m_hwnd,
+		(HMENU)(EIndexCommonCtrl::eCtrlIndex_WFP2HP), m_hinstance, NULL);
+	m_WFStart = CreateWindow(TEXT("button"), TEXT("fight"),
+		WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON | BS_CENTER,
+		(icol++) * (contrlWidth + marginW), irow*(marginH + contrlHeight), contrlWidth, contrlHeight, m_hwnd,
+		(HMENU)(EIndexCommonCtrl::eCtrlIndex_WFTestStart), m_hinstance, NULL);
+
 	// 取得控件句柄 
 	SendMessage(m_Test1Btn, WM_SETFONT, (WPARAM)m_hFont, TRUE);
 	SendMessage(m_Test2Btn, WM_SETFONT, (WPARAM)m_hFont, TRUE);
@@ -251,6 +264,10 @@ VOID SystemClass::CreateControls()
 	SendMessage(m_LogClearBtn, WM_SETFONT, (WPARAM)m_hFont, TRUE);
 	SendMessage(m_CaptureAudioBtn, WM_SETFONT, (WPARAM)m_hFont, TRUE);
 	SendMessage(m_TestDx10RenderBtn, WM_SETFONT, (WPARAM)m_hFont, TRUE);
+
+	SendMessage(m_WFP1HP, WM_SETFONT, (WPARAM)m_hFont, TRUE);
+	SendMessage(m_WFP2HP, WM_SETFONT, (WPARAM)m_hFont, TRUE);
+	SendMessage(m_WFStart, WM_SETFONT, (WPARAM)m_hFont, TRUE);
 	
 }
 
@@ -298,6 +315,15 @@ void SystemClass::KeyHandler()
 	}
 }
 
+unsigned __stdcall SystemClass::RunFunc(void* pThis)
+{
+	SystemClass* pSystemClass = (SystemClass*)pThis;
+	// subwindow msg
+	pSystemClass->SubWndMessageHandler(pSystemClass->m_msg_hwnd, pSystemClass->m_msg_umsg, 
+										pSystemClass->m_msg_wparam, pSystemClass->m_msg_lparam);
+	return 0;
+}
+
 void SystemClass::SubWndMessageHandler(HWND hwnd, INT umsg, WPARAM wparam, LPARAM lparam)
 {
 	if (wparam == EIndexCommonCtrl::eCtrlIndex_indexTest1)
@@ -319,6 +345,10 @@ void SystemClass::SubWndMessageHandler(HWND hwnd, INT umsg, WPARAM wparam, LPARA
 	else if (wparam == EIndexCommonCtrl::eCtrlIndex_indexLogClearBtn)
 	{
 
+	}
+	else if (wparam == EIndexCommonCtrl::eCtrlIndex_WFTestStart)
+	{
+		m_TestProc.testGeme(m_WFP1HP, m_WFP2HP);
 	}
 	else if (wparam == EIndexCommonCtrl::eCtrlIndex_CaptureAudio)
 	{
@@ -373,9 +403,12 @@ LRESULT SystemClass::MessageHandler(HWND hwnd, INT umsg, WPARAM wparam, LPARAM l
 			break;
 		}
 	case WM_COMMAND:
-		{
-		   // subwindow msg
-		   SubWndMessageHandler(hwnd, umsg, wparam, lparam);
+	{
+			m_msg_hwnd = hwnd;
+			m_msg_umsg = umsg;
+			m_msg_wparam = wparam;
+			m_msg_lparam = lparam;
+			start();
 		   break;
 		}
 	//任何其它消息发送到windows缺省处理.

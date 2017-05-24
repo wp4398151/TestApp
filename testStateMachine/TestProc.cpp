@@ -8,6 +8,10 @@
 #include "CaptureAudio.h"
 #include "WaveFile.h"
 #include <assert.h>
+#include "WarriorFight.h"
+#include "InitAttrs.h"
+
+#include "IUtil.h"
 bool MyCopyResource(ID3D10Texture2D **pTargetRenderTexture,
 	ID3D10Texture2D *pSrcRenderTexture, ID3D10Device* pDevice, LPCWSTR filePath);
 
@@ -113,20 +117,24 @@ void TestProc::CaptureAudio()
 	captureAudioInst.Stop();
 }
 
+void TestProc::testGeme(HWND hwndHP1P, HWND hwndHP2P)
+{
+	CInitAttrs initAttrInst;
+	string strFilePath = "cfg.ini";
+	
+	strFilePath = string(IUtil::GetAppPathA()) + strFilePath;
+	initAttrInst.Init(strFilePath);
+	CWarriorFight warriorFightInst;
+	warriorFightInst.Init(&initAttrInst, hwndHP1P, hwndHP2P);
+	warriorFightInst.Fight();
+}
+
 void TestProc::fillContent()
 {
 	for (int i = 0; i < CONTENTSIZE; ++i)
 	{
-		m_pContent[i] = RangedRand(0, 0x100);
+		m_pContent[i] = IUtil::RangedRand(0, 0x100);
 	}
-}
-
-// Generate random numbers in the half-closed interval
-// [range_min, range_max). In other words,
-// range_min <= random number < range_max
-int TestProc::RangedRand(int range_min, int range_max)
-{
-	return (int)((double)rand() / (RAND_MAX + 1) * (range_max - range_min) + range_min);
 }
 
 // Test Packet Parse Function
