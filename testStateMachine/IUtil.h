@@ -13,12 +13,12 @@ public:
 	static void GetText(HWND hwnd, string &rStr);
 	static void SetINT(HWND hwnd, int num);
 	static void SetText(HWND hwnd, LPSTR txt);
+	static void SeedRand();
 	static int RangedRand(int range_min, int range_max);
 	static WCHAR s_lpwAppPath[MAX_PATH];
 	static CHAR s_lpAppPath[MAX_PATH];
 	static void AdaptDeviceResolutionFrom96Dpi(POINT &ptTarget, POINT &ptSrc);
 };
-
 
 ////////////////////////////////////////////////////
 // œﬂ≥Ã¿‡

@@ -16,7 +16,7 @@ public:
 	bool TestWriteSSD();
 	bool TestWriteHDD();
 	void fillContent();
-
+	bool TestCacheBuffer();
 	void CaptureAudio();
 	void Render();
 	void TestDx10(HWND hwnd, POINT& ptTargetSize, POINT& ptCapturePicSize, RECT &rcClipRect);

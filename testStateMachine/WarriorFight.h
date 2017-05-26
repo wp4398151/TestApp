@@ -1,5 +1,6 @@
 #pragma once
 #include "InitAttrs.h"
+#include "Warrior.h"
 
 class CWarriorFight
 {
@@ -7,23 +8,15 @@ public:
 	CWarriorFight();
 	virtual ~CWarriorFight();
 	
-	bool Init(CInitAttrs* pAttrs, HWND hwndP1Edit, HWND hwndP2Edit);
+	bool Init(HWND hwndP1Edit, HWND hwndP2Edit);
+	bool GenerateCfg(CInitAttrs &initAttrInst, LPCSTR lpFileName);
 
 	bool Fight();
 public:
 	HWND m_hwndP1Edit;
 	HWND m_hwndP2Edit;
-
-	INT m_P1HP;
-	INT m_P1ATKMIN;
-	INT m_P1ATKMAX;
-	INT m_P1CDMIN;
-	INT m_P1CDMAX;
-
-	INT m_P2HP;
-	INT m_P2ATKMIN;
-	INT m_P2ATKMAX;
-	INT m_P2CDMIN;
-	INT m_P2CDMAX;
+	
+	CWarrior m_Warrior1;
+	CWarrior m_Warrior2;
 };
 

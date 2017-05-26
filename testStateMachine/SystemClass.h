@@ -50,11 +50,13 @@ private:
 		eCtrlIndex_indexPortEdit,
 		eCtrlIndex_indexIPEdit,
 		eCtrlIndex_indexMonitorEdit,
-		eCtrlIndex_CaptureAudio,	// 抓取音频
+		eCtrlIndex_CaptureAudio,		// 抓取音频
 		eCtrlIndex_TestDx10Render,
 		eCtrlIndex_WFTestStart,			// Warrior Fight test start
 		eCtrlIndex_WFP1HP,				// Warrior Fight HP of P1
 		eCtrlIndex_WFP2HP,				// Warrior Fight HP of P2
+		eCtrlIndex_CaptureScreenIntel,	// 抓取屏幕
+		eCtrlIndex_TestCacheBuffer,		// 测试CacheBuffer
 	};
 
 	HWND m_Test1Btn;	
@@ -69,6 +71,9 @@ private:
 	HWND m_WFP1HP;				
 	HWND m_WFP2HP;
 	HWND m_WFStart;				
+	HWND m_CaptureScreenIntel;
+	HWND m_TestCacheBuffer;
+
 	InputClass* m_Input;		// 键盘输入
 
 	LPCWSTR m_applicationName;

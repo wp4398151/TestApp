@@ -54,13 +54,14 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLOG_NO_ABBREVIATED_SEVERITIES;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(DXSDK_DIR)\Include;$(SolutionDir)protobuf-master\src;$(SolutionDir)glog-master\src\windows\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(INTELMEDIASDKROOT)\include;$(DXSDK_DIR)\Include;$(SolutionDir)protobuf-master\src;$(SolutionDir)glog-master\src\windows\</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>dxgi.lib;dxguid.lib;d3d10_1.lib;D3D10.lib;d3dx10.lib;libglog.lib;libprotobufd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(DXSDK_DIR)\Lib\x86;$(SolutionDir)protobuf-master\cmake\Debug;$(SolutionDir)glog-master\Debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(INTELMEDIASDKROOT)\lib\win32;$(DXSDK_DIR)\Lib\x86;$(SolutionDir)protobuf-master\cmake\Debug;$(SolutionDir)glog-master\Debug</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -88,11 +89,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="addressbook.pb.h" />
+    <ClInclude Include="CacheBuffer.h" />
     <ClInclude Include="CaptureAudio.h" />
     <ClInclude Include="CDuplicateOutputDx11.h" />
     <ClInclude Include="DirectXWindow.h" />
+    <ClInclude Include="H264IntelEncoder.h" />
     <ClInclude Include="InitAttrs.h" />
     <ClInclude Include="InputClass.h" />
+    <ClInclude Include="IntelScreenCapture.h" />
     <ClInclude Include="IUtil.h" />
     <ClInclude Include="IWaveFile.h" />
     <ClInclude Include="NetModule.h" />
@@ -103,6 +107,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestProc.h" />
     <ClInclude Include="testStateMachine.h" />
+    <ClInclude Include="Warrior.h" />
     <ClInclude Include="WarriorFight.h" />
     <ClInclude Include="WaveFile.h" />
   </ItemGroup>
@@ -110,11 +115,14 @@
     <ClCompile Include="addressbook.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="CacheBuffer.cpp" />
     <ClCompile Include="CaptureAudio.cpp" />
     <ClCompile Include="CDuplicateOutputDx11.cpp" />
     <ClCompile Include="DirectXWindow.cpp" />
+    <ClCompile Include="H264IntelEncoder.cpp" />
     <ClCompile Include="InitAttrs.cpp" />
     <ClCompile Include="InputClass.cpp" />
+    <ClCompile Include="IntelScreenCapture.cpp" />
     <ClCompile Include="IUtil.cpp" />
     <ClCompile Include="IWaveFile.cpp" />
     <ClCompile Include="NetModule.cpp" />
@@ -126,6 +134,7 @@
     <ClCompile Include="SystemClass.cpp" />
     <ClCompile Include="TestProc.cpp" />
     <ClCompile Include="testStateMachine.cpp" />
+    <ClCompile Include="Warrior.cpp" />
     <ClCompile Include="WarriorFight.cpp" />
     <ClCompile Include="WaveFile.cpp" />
   </ItemGroup>

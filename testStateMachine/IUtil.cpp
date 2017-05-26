@@ -4,9 +4,13 @@
 WCHAR IUtil::s_lpwAppPath[MAX_PATH];
 CHAR IUtil::s_lpAppPath[MAX_PATH];
 
-bool IUtil::Init()
+void  IUtil::SeedRand()
 {
 	srand(GetTickCount());
+}
+
+bool IUtil::Init()
+{
 	GetModuleFileNameW(NULL, s_lpwAppPath, MAX_PATH);
 	GetModuleFileNameA(NULL, s_lpAppPath, MAX_PATH);
 	WCHAR* wexecutableName = wcsrchr(s_lpwAppPath, L'\\');

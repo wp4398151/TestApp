@@ -10,8 +10,11 @@
 #include <assert.h>
 #include "WarriorFight.h"
 #include "InitAttrs.h"
-
+#include "IntelScreenCapture.h"
 #include "IUtil.h"
+#include "CacheBuffer.h"
+#include <assert.h>
+
 bool MyCopyResource(ID3D10Texture2D **pTargetRenderTexture,
 	ID3D10Texture2D *pSrcRenderTexture, ID3D10Device* pDevice, LPCWSTR filePath);
 
@@ -119,13 +122,9 @@ void TestProc::CaptureAudio()
 
 void TestProc::testGeme(HWND hwndHP1P, HWND hwndHP2P)
 {
-	CInitAttrs initAttrInst;
-	string strFilePath = "cfg.ini";
-	
-	strFilePath = string(IUtil::GetAppPathA()) + strFilePath;
-	initAttrInst.Init(strFilePath);
+
 	CWarriorFight warriorFightInst;
-	warriorFightInst.Init(&initAttrInst, hwndHP1P, hwndHP2P);
+	warriorFightInst.Init(hwndHP1P, hwndHP2P);
 	warriorFightInst.Fight();
 }
 
@@ -205,5 +204,72 @@ bool TestProc::TestWriteHDD()
 	
 	LOG(INFO) << (std::to_string(GetTickCount() - curTime).c_str());
 	fclose(pFile);
+	return true;
+}
+
+#define TESTSTR1 "123456789012345678901234567890"
+#define TESTNUM1 30 
+
+bool TestProc::TestCacheBuffer()
+{
+	unsigned char bufTestSendMsg[] = TESTSTR1;
+	unsigned char bufTestReciveMsg[sizeof(TESTSTR1)] = { 0 };
+	unsigned char resultBuf1[TESTNUM1] = {0};
+	memcpy(resultBuf1, TESTSTR1 , TESTNUM1);
+
+	CCacheBuffer cacheBuffer;
+	OutputDebugStringA("\r\n Init");
+	assert(cacheBuffer.Init());
+	string strInfo;
+	cacheBuffer.GetInfo(strInfo);
+	OutputDebugStringA(strInfo.c_str());
+
+	OutputDebugStringA("\r\n Write");
+	assert(cacheBuffer.Write(bufTestSendMsg, sizeof(bufTestSendMsg)));
+	strInfo.clear(); cacheBuffer.GetInfo(strInfo); OutputDebugStringA(strInfo.c_str());
+	OutputDebugStringA("\r\n WriteSize: ");
+	OutputDebugStringA((LPCSTR)std::to_string(sizeof(bufTestSendMsg)).c_str());
+
+	INT cbPeek = 0;
+	OutputDebugStringA("\r\n Peek");
+	assert(cacheBuffer.Peek(bufTestReciveMsg, TESTNUM1, cbPeek));
+	assert((0==memcmp(resultBuf1, bufTestReciveMsg, TESTNUM1)));
+	OutputDebugStringA("\r\n PeekContent: ");
+	OutputDebugStringA((LPCSTR)bufTestReciveMsg);
+	OutputDebugStringA(", PeekSize: ");
+	OutputDebugStringA((LPCSTR)std::to_string(cbPeek).c_str());
+
+	strInfo.clear(); cacheBuffer.GetInfo(strInfo); OutputDebugStringA(strInfo.c_str());
+
+	for (int i = 0; i < 8; ++i)
+	{
+		ZeroMemory(bufTestReciveMsg, sizeof(TESTSTR1));
+		INT cbRead = 0;
+		OutputDebugStringA("\r\n Read");
+		assert(cacheBuffer.Read(bufTestReciveMsg, TESTNUM1, cbRead));
+		//assert((0 == memcmp(resultBuf1, bufTestReciveMsg, TESTNUM1)));
+		OutputDebugStringA("\r\n ReadContent: ");
+		OutputDebugStringA((LPCSTR)bufTestReciveMsg);
+		OutputDebugStringA(", ReadSize: ");
+		OutputDebugStringA((LPCSTR)std::to_string(cbRead).c_str());
+		strInfo.clear(); cacheBuffer.GetInfo(strInfo); OutputDebugStringA(strInfo.c_str());
+	}
+
+	//ZeroMemory(bufTestReciveMsg, sizeof(TESTSTR1));
+	//cbRead = 0;
+	//OutputDebugStringA("\r\n Read");
+	//assert(cacheBuffer.Read(bufTestReciveMsg, TESTNUM1, cbRead));
+	//OutputDebugStringA("\r\n ReadContent: ");
+	//OutputDebugStringA((LPCSTR)bufTestReciveMsg);
+	//OutputDebugStringA(", ReadSize: ");
+	//OutputDebugStringA((LPCSTR)std::to_string(cbRead).c_str());
+	//strInfo.clear(); cacheBuffer.GetInfo(strInfo); OutputDebugStringA(strInfo.c_str());
+
+	OutputDebugStringA("\r\n Write");
+	assert(cacheBuffer.Write(bufTestSendMsg, sizeof(bufTestSendMsg)));
+	strInfo.clear(); cacheBuffer.GetInfo(strInfo); OutputDebugStringA(strInfo.c_str());
+	OutputDebugStringA("\r\n WriteSize: ");
+	OutputDebugStringA((LPCSTR)std::to_string(sizeof(bufTestSendMsg)).c_str());
+
 	return true;
 }

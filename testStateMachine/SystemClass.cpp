@@ -197,6 +197,22 @@ void SystemClass::ShutdownWindows()
 //	ChooseFont(&cf);
 //}
 
+#define CREATEBUTTON(hwndCtrl, caption, ctrlIdx) {															\
+	hwndCtrl = CreateWindow(TEXT("button"), caption, \
+	WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON | BS_CENTER, \
+	(icol++) * (contrlWidth + marginW), irow*(marginH + contrlHeight), contrlWidth, contrlHeight, m_hwnd, \
+	(HMENU)ctrlIdx, m_hinstance, NULL);																		\
+	SendMessage(hwndCtrl, WM_SETFONT, (WPARAM)m_hFont, TRUE);												\
+}
+
+#define CREATEEDIT(hwndCtrl, caption, ctrlIdx)	{	\
+	hwndCtrl = CreateWindow(TEXT("edit"), caption, \
+	WS_CHILD | WS_VISIBLE | WS_BORDER, \
+	(icol++) * (contrlWidth + marginW), irow*(marginH + contrlHeight), contrlWidth, contrlHeight, m_hwnd, \
+	(HMENU)(ctrlIdx), m_hinstance, NULL);	\
+	SendMessage(hwndCtrl, WM_SETFONT, (WPARAM)m_hFont, TRUE);												\
+}
+
 VOID SystemClass::CreateControls()
 {
 	int marginW = 3;
@@ -230,30 +246,26 @@ VOID SystemClass::CreateControls()
 		WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON | BS_CENTER,
 		(icol++) * (contrlWidth + marginW), irow*(marginH + contrlHeight), contrlWidth, contrlHeight, m_hwnd,
 		(HMENU)(EIndexCommonCtrl::eCtrlIndex_indexLogClearBtn), m_hinstance, NULL);
-	++irow;
-	icol = 0;
-	m_CaptureAudioBtn = CreateWindow(TEXT("button"), TEXT("×¥È¡ÒôÆµ"),
-		WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON | BS_CENTER,
-		(icol++) * (contrlWidth + marginW), irow*(marginH + contrlHeight), contrlWidth, contrlHeight, m_hwnd,
-		(HMENU)(EIndexCommonCtrl::eCtrlIndex_CaptureAudio), m_hinstance, NULL);
-
 	m_TestDx10RenderBtn  = CreateWindow(TEXT("button"), TEXT("²âÊÔDx10"),
 		WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON | BS_CENTER,
 		(icol++) * (contrlWidth + marginW), irow*(marginH + contrlHeight), contrlWidth, contrlHeight, m_hwnd,
 		(HMENU)(EIndexCommonCtrl::eCtrlIndex_TestDx10Render), m_hinstance, NULL);
 
-	m_WFP1HP = CreateWindow(TEXT("edit"), TEXT("P1"),
-		WS_CHILD | WS_VISIBLE | WS_BORDER,
-		(icol++) * (contrlWidth + marginW), irow*(marginH + contrlHeight), contrlWidth, contrlHeight, m_hwnd,
-		(HMENU)(EIndexCommonCtrl::eCtrlIndex_WFP1HP), m_hinstance, NULL);
-	m_WFP2HP = CreateWindow(TEXT("edit"), TEXT("P2"),
-		WS_CHILD | WS_VISIBLE | WS_BORDER,
-		(icol++) * (contrlWidth + marginW), irow*(marginH + contrlHeight), contrlWidth, contrlHeight, m_hwnd,
-		(HMENU)(EIndexCommonCtrl::eCtrlIndex_WFP2HP), m_hinstance, NULL);
-	m_WFStart = CreateWindow(TEXT("button"), TEXT("fight"),
-		WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON | BS_CENTER,
-		(icol++) * (contrlWidth + marginW), irow*(marginH + contrlHeight), contrlWidth, contrlHeight, m_hwnd,
-		(HMENU)(EIndexCommonCtrl::eCtrlIndex_WFTestStart), m_hinstance, NULL);
+	//----------------------------------------------------------------------------------
+	++irow;
+	icol = 0;
+
+	CREATEEDIT(m_WFP1HP, TEXT("P1"), EIndexCommonCtrl::eCtrlIndex_WFP1HP);
+	CREATEEDIT(m_WFP2HP, TEXT("P2"), EIndexCommonCtrl::eCtrlIndex_WFP2HP);
+	CREATEBUTTON(m_WFStart, TEXT("fight"), EIndexCommonCtrl::eCtrlIndex_WFTestStart);
+
+	//----------------------------------------------------------------------------------
+	++irow;
+	icol = 0;
+
+	CREATEBUTTON(m_CaptureAudioBtn, TEXT("×¥È¡ÒôÆµ"), EIndexCommonCtrl::eCtrlIndex_CaptureAudio);
+	CREATEBUTTON(m_CaptureScreenIntel, TEXT("×¥È¡ÆÁÄ»"), EIndexCommonCtrl::eCtrlIndex_CaptureScreenIntel);
+	CREATEBUTTON(m_TestCacheBuffer, TEXT("²âÊÔ»º´æ"), EIndexCommonCtrl::eCtrlIndex_TestCacheBuffer);
 
 	// È¡µÃ¿Ø¼þ¾ä±ú 
 	SendMessage(m_Test1Btn, WM_SETFONT, (WPARAM)m_hFont, TRUE);
@@ -262,13 +274,7 @@ VOID SystemClass::CreateControls()
 	SendMessage(m_Test4Btn, WM_SETFONT, (WPARAM)m_hFont, TRUE);
 	SendMessage(m_IPEdit, WM_SETFONT, (WPARAM)m_hFont, TRUE);
 	SendMessage(m_LogClearBtn, WM_SETFONT, (WPARAM)m_hFont, TRUE);
-	SendMessage(m_CaptureAudioBtn, WM_SETFONT, (WPARAM)m_hFont, TRUE);
 	SendMessage(m_TestDx10RenderBtn, WM_SETFONT, (WPARAM)m_hFont, TRUE);
-
-	SendMessage(m_WFP1HP, WM_SETFONT, (WPARAM)m_hFont, TRUE);
-	SendMessage(m_WFP2HP, WM_SETFONT, (WPARAM)m_hFont, TRUE);
-	SendMessage(m_WFStart, WM_SETFONT, (WPARAM)m_hFont, TRUE);
-	
 }
 
 #include <iostream>
@@ -307,7 +313,7 @@ void SystemClass::KeyHandler()
 
 	if (m_Input->IsKeyDown(0x43))		//c:  clear Log
 	{
-
+		
 	}
 	else if(m_Input->IsKeyDown(0x51))	//q: quit
 	{
@@ -346,6 +352,10 @@ void SystemClass::SubWndMessageHandler(HWND hwnd, INT umsg, WPARAM wparam, LPARA
 	{
 
 	}
+	else if (wparam == EIndexCommonCtrl::eCtrlIndex_CaptureScreenIntel)
+	{
+		//	m_CaptureScreenIntel
+	}
 	else if (wparam == EIndexCommonCtrl::eCtrlIndex_WFTestStart)
 	{
 		m_TestProc.testGeme(m_WFP1HP, m_WFP2HP);
@@ -377,6 +387,9 @@ void SystemClass::SubWndMessageHandler(HWND hwnd, INT umsg, WPARAM wparam, LPARA
 			0, 200, 400, 300, m_hwnd, NULL, m_hinstance, NULL);
 		//GetClientRect(hwndRender, &rcClient);
 		m_TestProc.TestDx10(hwndRender, ptTargetSize, ptCapturePicSize, rcClipRect);
+	}
+	else if (wparam == EIndexCommonCtrl::eCtrlIndex_TestCacheBuffer){
+		m_TestProc.TestCacheBuffer();
 	}
 }
 

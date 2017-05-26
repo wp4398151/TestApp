@@ -1,18 +1,6 @@
 #include "stdafx.h"
 #include "WarriorFight.h"
 #include "IUtil.h"
-// cfg.ini
-#define P1HP "P1HP"
-#define P1ATKMIN "P1ATKMIN"
-#define P1ATKMAX "P1ATKMAX"
-#define P1CDMIN "P1CDMIN"
-#define P1CDMAX "P1CDMAX"
-
-#define P2HP "P2HP"
-#define P2ATKMIN "P2ATKMIN"
-#define P2ATKMAX "P2ATKMAX"
-#define P2CDMIN "P2CDMIN"
-#define P2CDMAX "P2CDMAX"
 
 CWarriorFight::CWarriorFight()
 {
@@ -22,68 +10,54 @@ CWarriorFight::~CWarriorFight()
 {
 }
 
-bool CWarriorFight::Init(CInitAttrs* pAttrs, HWND hwndP1Edit, HWND hwndP2Edit)
+bool CWarriorFight::GenerateCfg(CInitAttrs &initAttrInst, LPCSTR lpFileName)
 {
-	if (!pAttrs)
-	{
-		LOG(ERROR) << "pAttrs should not be null";
-		return false;
-	}
-	
+	string strFilePath = lpFileName;
+	strFilePath = string(IUtil::GetAppPathA()) + strFilePath;
+	initAttrInst.Init(strFilePath);
+	return true;
+}
+
+bool CWarriorFight::Init(HWND hwndP1Edit, HWND hwndP2Edit)
+{
 	m_hwndP1Edit = hwndP1Edit;
 	m_hwndP2Edit = hwndP2Edit;
 
-	m_P1HP = pAttrs->GetInt(P1HP);
-	m_P1ATKMIN = pAttrs->GetInt(P1ATKMIN);
-	m_P1ATKMAX = pAttrs->GetInt(P1ATKMAX);
-	m_P1CDMIN = pAttrs->GetInt(P1CDMIN);
-	m_P1CDMAX = pAttrs->GetInt(P1CDMAX);
+	CInitAttrs initAttrInst1;
+	GenerateCfg(initAttrInst1, "Warrior1.cfg.ini");
+	m_Warrior1.Init(&initAttrInst1);
 
-	m_P2HP = pAttrs->GetInt(P2HP);
-	m_P2ATKMIN = pAttrs->GetInt(P2ATKMIN);
-	m_P2ATKMAX = pAttrs->GetInt(P2ATKMAX);
-	m_P2CDMIN = pAttrs->GetInt(P2CDMIN);
-	m_P2CDMAX = pAttrs->GetInt(P2CDMAX);
+	CInitAttrs initAttrInst2;
+	GenerateCfg(initAttrInst2, "Warrior2.cfg.ini");
+	m_Warrior2.Init(&initAttrInst2);
 	
 	return true;
 }
 
 bool CWarriorFight::Fight()
 {
-	//string strHPP1, strHPP2;
-	//IUtil::GetText(m_hwndP1Edit, strHPP1);
-	//IUtil::GetText(m_hwndP2Edit, strHPP2);
-
-	int hpP1 = m_P1HP;
-	int hpP2 = m_P2HP;
-
-	int cdP1 = IUtil::RangedRand(m_P1CDMIN, m_P1CDMAX);
-	int cdP2 = IUtil::RangedRand(m_P2CDMIN, m_P2CDMAX);
+	IUtil::SeedRand();
 	const int cdTime = 50;
-	while (hpP1 > 0 && hpP2 > 0)
+	while (m_Warrior1.IsAlive() && m_Warrior2.IsAlive())
 	{
-		if (cdP1<0)
+		if (!m_Warrior1.IsInCD())
 		{
-			hpP2 -= IUtil::RangedRand(m_P1ATKMIN, m_P1ATKMAX);
-			cdP1 = IUtil::RangedRand(m_P1CDMIN, m_P1CDMAX);
-			IUtil::SetINT(m_hwndP2Edit, hpP2);
+			m_Warrior1.Attack(m_Warrior2);
+			IUtil::SetINT(m_hwndP2Edit, m_Warrior2.m_curHP);
 		}
-		if (cdP2<0)
+
+		if (!m_Warrior2.IsInCD())
 		{
-			hpP1 -= IUtil::RangedRand(m_P2ATKMIN, m_P2ATKMAX);
-			cdP2 = IUtil::RangedRand(m_P2CDMIN, m_P2CDMAX);
-			IUtil::SetINT(m_hwndP1Edit, hpP1);
+			m_Warrior2.Attack(m_Warrior1);
+			IUtil::SetINT(m_hwndP1Edit, m_Warrior1.m_curHP);
 		}
 
 		Sleep(cdTime);
-		cdP1 -= cdTime;
-		cdP2 -= cdTime;
-
-		IUtil::RangedRand(0, 10);
+		m_Warrior1.m_curCD -= cdTime;
+		m_Warrior2.m_curCD  -= cdTime;
 	}
 
-
-	if (hpP1 > 0)
+	if (m_Warrior1.IsAlive())
 	{
 		IUtil::SetText(m_hwndP1Edit, "P1 Win");
 		IUtil::SetText(m_hwndP2Edit, "P2 Dead");

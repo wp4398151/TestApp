@@ -6,7 +6,6 @@ CPacketParser::CPacketParser()
 {
 }
 
-
 CPacketParser::~CPacketParser()
 {
 }
