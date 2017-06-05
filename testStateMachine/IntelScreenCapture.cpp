@@ -35,7 +35,6 @@ bool CIntelScreenCapture::Test()
 
 	mfxFrameAllocRequest request;
 
-
 	MFXClose(session);
 
 	return true;

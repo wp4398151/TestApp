@@ -34,7 +34,7 @@ public:
 	void SetTexRenderTarget(bool bStencil);
 	void DrawTexture(bool bTexFrameResource);
 	void SetWindowRenderTarget(bool bStencil);
-	ID3D10Texture2D* CopyFromSwapBackbuffer();
+	void CopyFromSwapBackbuffer();
 	IDXGISwapChain*			m_pSwapChain;
 	ID3D10Device1*			m_pd3dDevice;
 private:

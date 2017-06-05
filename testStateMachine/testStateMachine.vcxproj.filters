@@ -90,6 +90,9 @@
     <ClInclude Include="CacheBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="EncodeH264FFMPEG.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -150,6 +153,9 @@
       <Filter>源文件\protoc</Filter>
     </ClCompile>
     <ClCompile Include="CacheBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EncodeH264FFMPEG.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

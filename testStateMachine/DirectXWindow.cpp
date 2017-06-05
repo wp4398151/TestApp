@@ -137,7 +137,7 @@ void CDirectXWindow::Clear()
 	SAFE_RELEASE(m_pFrameResource);
 }
 
-ID3D10Texture2D* CDirectXWindow::CopyFromSwapBackbuffer()
+void CDirectXWindow::CopyFromSwapBackbuffer()
 {
 	// Create a render target view
 	ID3D10Texture2D *pBackBuffer = NULL;
@@ -145,12 +145,13 @@ ID3D10Texture2D* CDirectXWindow::CopyFromSwapBackbuffer()
 	if (!SUCCEEDED(hr))
 	{
 		LOG(ERROR) << "m_pSwapChain->GetBuffer failed ! :" << hr;
-		return NULL;
+		return ;
 	}
 
 	ID3D10Texture2D *pTargetRenderTexture = NULL;
 	MyCopyResource(&pTargetRenderTexture, pBackBuffer, m_pd3dDevice, L"C:\\testbmp\\BackBuffer\\");
 	SAFE_RELEASE(pTargetRenderTexture);
+	return ;
 }
 
 bool CDirectXWindow::MapTextrueFromFrame(ID3D10Texture2D* pTex2D)
