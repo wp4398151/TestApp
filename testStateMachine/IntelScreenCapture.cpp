@@ -1,4 +1,8 @@
 #include "stdafx.h"
+
+// 根据是否使用Intel特性来决定是否使用Intel SDK
+#ifdef INTEL_SDK
+
 #include "IntelScreenCapture.h"
 
 #pragma comment(lib, "libmfx.lib")
@@ -61,3 +65,5 @@ bool CIntelScreenCapture::Init()
 {
 	return true;
 }
+
+#endif //INTEL_SDK
