@@ -21,6 +21,7 @@ public:
 	void Render();
 	void TestDx10(HWND hwnd, POINT& ptTargetSize, POINT& ptCapturePicSize, RECT &rcClipRect);
 	void testGeme(HWND hwndHP1P, HWND hwndHP2P);
+	void TestPacketParser();
 private:	
 	CDirectXWindow m_Directx10Render;
 	SystemClass* m_pSysClass;

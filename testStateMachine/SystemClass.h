@@ -57,6 +57,7 @@ private:
 		eCtrlIndex_WFP2HP,				// Warrior Fight HP of P2
 		eCtrlIndex_CaptureScreenIntel,	// ×¥È¡ÆÁÄ»
 		eCtrlIndex_TestCacheBuffer,		// ²âÊÔCacheBuffer
+		eCtrlIndex_TestPacketParser,	// ²âÊÔPacketParser
 	};
 
 	HWND m_Test1Btn;	
@@ -73,6 +74,7 @@ private:
 	HWND m_WFStart;				
 	HWND m_CaptureScreenIntel;
 	HWND m_TestCacheBuffer;
+	HWND m_TestPacketParser;
 
 	InputClass* m_Input;		// ¼üÅÌÊäÈë
 

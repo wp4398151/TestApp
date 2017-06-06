@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "EncodeH264FFMPEG.h"
 
+#ifdef USINGFFMPEG
+
 EXTERN_C{
 #include "libavcodec/avcodec.h"
 #include "libavformat/avformat.h"
@@ -56,3 +58,5 @@ bool CEncodeH264FFMPEG::TestDecode()
 	//	return -1; // Didn't find a video stream
 
 }
+
+#endif //USINGFFMPEG

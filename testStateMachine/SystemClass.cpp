@@ -266,6 +266,7 @@ VOID SystemClass::CreateControls()
 	CREATEBUTTON(m_CaptureAudioBtn, TEXT("抓取音频"), EIndexCommonCtrl::eCtrlIndex_CaptureAudio);
 	CREATEBUTTON(m_CaptureScreenIntel, TEXT("抓取屏幕"), EIndexCommonCtrl::eCtrlIndex_CaptureScreenIntel);
 	CREATEBUTTON(m_TestCacheBuffer, TEXT("测试缓存"), EIndexCommonCtrl::eCtrlIndex_TestCacheBuffer);
+	CREATEBUTTON(m_TestPacketParser, TEXT("测试解包"), EIndexCommonCtrl::eCtrlIndex_TestPacketParser);
 
 	// 取得控件句柄 
 	SendMessage(m_Test1Btn, WM_SETFONT, (WPARAM)m_hFont, TRUE);
@@ -354,7 +355,11 @@ void SystemClass::SubWndMessageHandler(HWND hwnd, INT umsg, WPARAM wparam, LPARA
 	}
 	else if (wparam == EIndexCommonCtrl::eCtrlIndex_CaptureScreenIntel)
 	{
-		//	m_CaptureScreenIntel
+		// m_CaptureScreenIntel
+	}
+	else if (wparam == EIndexCommonCtrl::eCtrlIndex_TestPacketParser)
+	{
+		m_TestProc.TestPacketParser();
 	}
 	else if (wparam == EIndexCommonCtrl::eCtrlIndex_WFTestStart)
 	{

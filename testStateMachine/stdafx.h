@@ -37,5 +37,6 @@
 
 
 #define SAFE_RELEASE(ptr) if(ptr){ ptr->Release(); ptr = NULL;}
+#define SAFE_FREE(ptr) if(ptr){ free(ptr); ptr = NULL;}
 
 // TODO:  在此处引用程序需要的其他头文件

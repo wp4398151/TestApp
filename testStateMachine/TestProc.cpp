@@ -13,6 +13,7 @@
 #include "IntelScreenCapture.h"
 #include "IUtil.h"
 #include "CacheBuffer.h"
+#include "PacketParser.h"
 #include <assert.h>
 
 bool MyCopyResource(ID3D10Texture2D **pTargetRenderTexture,
@@ -91,6 +92,54 @@ void TestProc::TestDx10(HWND hwnd, POINT& ptTargetSize, POINT& ptCapturePicSize,
 	m_Directx10Render.SetWindowRenderTarget(false);
 	m_Directx10Render.Render();
 	m_Directx10Render.CopyFromSwapBackbuffer();
+}
+
+void TestProc::TestPacketParser()
+{
+	string strInfo;
+	CCacheBuffer cache;
+	cache.Init();
+	CPacketWriter writer(&cache);
+
+	BYTE pMsg[] = "abcd";
+	writer.PutStreamBuffer(pMsg, sizeof(pMsg));
+
+	OutputDebugStringA("\r\n");
+	strInfo.clear(); cache.GetInfo(strInfo); OutputDebugStringA(strInfo.c_str());
+	OutputDebugStringA("\r\n");
+
+	BYTE pMsg1[] = "1234567";
+	writer.PutStreamBuffer(pMsg1, sizeof(pMsg1));
+
+	OutputDebugStringA("\r\n");
+	strInfo.clear(); cache.GetInfo(strInfo); OutputDebugStringA(strInfo.c_str());
+	OutputDebugStringA("\r\n");
+
+	BYTE pMsg2[] = "1234567890";
+	writer.PutStreamBuffer(pMsg2, sizeof(pMsg2));
+
+	OutputDebugStringA("\r\n");
+	strInfo.clear(); cache.GetInfo(strInfo); OutputDebugStringA(strInfo.c_str());
+	OutputDebugStringA("\r\n");
+
+	CPacketParser paser(&cache);
+	LPBYTE pContent = NULL;
+	INT cbRead = 0;
+
+	OutputDebugStringA("----\r\n");
+	paser.GetStreamBuffer(&pContent, cbRead);
+	OutputDebugStringA((LPSTR)pContent);
+	OutputDebugStringA("----\r\n");
+
+	paser.GetStreamBuffer(&pContent, cbRead);
+	OutputDebugStringA((LPSTR)pContent);
+	OutputDebugStringA("----\r\n");
+
+	paser.GetStreamBuffer(&pContent, cbRead);
+	OutputDebugStringA((LPSTR)pContent);
+	OutputDebugStringA("----\r\n");
+
+	return;
 }
 
 void TestProc::CaptureAudio()

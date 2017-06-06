@@ -7,15 +7,42 @@
 *
 */
 
+#include "CacheBuffer.h"
 
-// One Packet Max Size Less than 1024
+#define TOKEN "wup"
+// header
+struct Packet{
+	struct Header{
+		unsigned char tok[4];	// tok = wup
+		UINT cbBodySize;		// without header
+	} header;
+	LPBYTE pbody;				// body
+};
+
 class CPacketParser
 {
 public:
-	CPacketParser();
+	CPacketParser(CCacheBuffer *pCacheBuffer) :m_pCacheBuffer(pCacheBuffer){ ; }
 	virtual ~CPacketParser();
+public:
 
-	void ReleaseBuffer(PBYTE ppBuffer);
-	bool GetStreamBuffer(PBYTE* ppBuffer, int &cbRead);
+	void ReleaseBuffer(LPBYTE pPacketBody);
+	bool GetStreamBuffer(LPBYTE* ppPacketBody, int &cbRead);
+	
+private:
+	CCacheBuffer *m_pCacheBuffer;
 };
+
+class CPacketWriter
+{
+public:
+	CPacketWriter(CCacheBuffer *pCacheBuffer) :m_pCacheBuffer(pCacheBuffer){ ; }
+	virtual ~CPacketWriter();
+public:
+	bool PutStreamBuffer(LPBYTE ppPacketBody, int cbSize);
+
+private:
+	CCacheBuffer *m_pCacheBuffer;
+};
+
 
