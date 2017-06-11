@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <map>
+#include "CacheBuffer.h"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ public:
 	INT GetInt(LPSTR pStrAttrName);
 
 	void ParseLine(char* pLine);
+	bool ParseBuffer(WUP::CCacheBuffer* pBuffer);
 public:
 	map<string, string> m_MapAttrs;
 };

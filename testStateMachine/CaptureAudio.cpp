@@ -5,6 +5,8 @@
 
 CaptureAudioClass::CaptureAudioClass(IWaveFile* pFile)
 {
+	CoInitialize(NULL);
+
 	m_pFile = pFile;
 	m_pWaveFormatEx = NULL;
 	m_indexSelectAudioDeviceID = 1;
@@ -147,6 +149,12 @@ bool CaptureAudioClass::InitDevice(EDataFlow deviceType, DWORD deviceFlag)
 		}
 	}
 
+	if (0 == count)
+	{
+		LOG(ERROR) << ("GetAudioDevices: Could not enumerate audio endpoints");
+		return false;
+	}
+
 	LPCWSTR wzDeviceName = m_VectorAudioList[m_indexSelectAudioDeviceID].strName.c_str();
 	DOLOGW(L"DebugAudio: Device Name:" << wzDeviceName );
 
@@ -237,6 +245,9 @@ bool CaptureAudioClass::GetNextBuffer(UINT &numFrames)
 		INT bufferSize = m_pWaveFormatEx->nChannels*numFramesAvailable*m_pWaveFormatEx->wBitsPerSample / 8;
 
 		m_pFile->ConvertPCM(pBuffer, pData, bufferSize);
+	
+		// Ä£Äâ¾²ÒôÊý¾Ý
+		// ZeroMemory(pBuffer, bufferSize);
 
 		if (m_pFile && !m_pFile->WriteSample(pBuffer, bufferSize))
 		{

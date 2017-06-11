@@ -93,6 +93,12 @@
     <ClInclude Include="EncodeH264FFMPEG.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ProtoDef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="NetMsgControl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -156,6 +162,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="EncodeH264FFMPEG.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="NetMsgControl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

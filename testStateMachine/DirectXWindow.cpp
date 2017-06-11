@@ -250,8 +250,12 @@ void CDirectXWindow::Render()
 {
 	if (m_pd3dDevice && m_pSwapChain)
 	{
-		Transform();
+		if (!m_pDiffuseVariable)
+		{
+			return;
+		}
 		m_pDiffuseVariable->SetResource(m_pTextureRV);
+		Transform();
 
 		float ClearColor[4] = { 0.0f, 0.125f, 0.6f, 1.0f }; // RGBA
 		m_pd3dDevice->ClearRenderTargetView(m_pRenderTargetView, ClearColor);

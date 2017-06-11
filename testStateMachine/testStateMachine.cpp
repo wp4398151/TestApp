@@ -10,8 +10,6 @@
 
 #define MAX_LOADSTRING 100
 
-
-
 #define LOGINFOFILE	"Log\\Info"
 #define LOGWARNFILE	"Log\\Warn"
 #define LOGERRFILE	"Log\\Err"
@@ -25,12 +23,13 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// 主窗口类名
 //const int INFO = GLOG_INFO, WARNING = GLOG_WARNING,
 //ERROR = GLOG_ERROR, FATAL = GLOG_FATAL;
 
-
 // 此代码模块中包含的函数的前向声明: 
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
+
+using WUP::IUtil;
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,

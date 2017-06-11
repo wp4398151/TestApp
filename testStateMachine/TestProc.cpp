@@ -16,6 +16,8 @@
 #include "PacketParser.h"
 #include <assert.h>
 
+using WUP::IUtil;
+
 bool MyCopyResource(ID3D10Texture2D **pTargetRenderTexture,
 	ID3D10Texture2D *pSrcRenderTexture, ID3D10Device* pDevice, LPCWSTR filePath);
 
@@ -38,17 +40,26 @@ void TestProc::Render()
 void TestProc::TestDx10(HWND hwnd, POINT& ptTargetSize, POINT& ptCapturePicSize, RECT &rcClipRect)
 {
 	//// --------------------- SaveToFile 将帧渲染到创建的Texture中
-	//IDXGIAdapter* pAdapter = NULL;
-	//CDuplicateOutputDx10::GetSpecificAdapter(0, &pAdapter);
-	//bool bRet = m_Directx10Render.Init(hwnd, ptTargetSize, rcClipRect, pAdapter);
-	//SAFE_RELEASE(pAdapter);
-	//CDuplicateOutputDx10 dx10(hwnd, 
-	//	m_Directx10Render.m_pd3dDevice, 
-	//		m_Directx10Render.m_pSwapChain);
-	//bRet = dx10.CreateOutputDuplicator();
-	//ID3D10Texture2D *p2dTexture = nullptr;
-	//p2dTexture = dx10.GetOneFrame();
-	//assert(p2dTexture);
+	IDXGIAdapter* pAdapter = NULL;
+	CDuplicateOutputDx10::GetSpecificAdapter(0, &pAdapter);
+	bool bRet = m_Directx10Render.Init(hwnd, ptTargetSize, rcClipRect, pAdapter);
+	SAFE_RELEASE(pAdapter);
+	CDuplicateOutputDx10 dx10(hwnd, 
+		m_Directx10Render.m_pd3dDevice, 
+			m_Directx10Render.m_pSwapChain);
+	bRet = dx10.CreateOutputDuplicator();
+	ID3D10Texture2D *p2dTexture = nullptr;
+	p2dTexture = dx10.GetOneFrame();
+	assert(p2dTexture);
+
+	if (p2dTexture)
+	{
+		ALERT("Get Frame SUCCEEDED!");
+	}
+	else
+	{
+		ALERT("Get Frame FAILED!");
+	}
 
 	//ID3D10Texture2D *pTargetRenderTexture = NULL;
 	//MyCopyResource(&pTargetRenderTexture, p2dTexture, 
@@ -81,25 +92,25 @@ void TestProc::TestDx10(HWND hwnd, POINT& ptTargetSize, POINT& ptCapturePicSize,
 	//m_Directx10Render.SaveToDisk();
 
 	//// ------------------ RenderToWindow 渲染到交换链中
-	IDXGIAdapter* pAdapter = NULL;
-	CDuplicateOutputDx10::GetSpecificAdapter(0, &pAdapter);
-	bool bRet = m_Directx10Render.Init(hwnd, ptTargetSize, rcClipRect, pAdapter);
-	SAFE_RELEASE(pAdapter);
-	bRet = m_Directx10Render.InitModel();
-	assert(bRet);
-	bRet = m_Directx10Render.MapTextrue();
-	assert(bRet);
-	m_Directx10Render.SetWindowRenderTarget(false);
-	m_Directx10Render.Render();
-	m_Directx10Render.CopyFromSwapBackbuffer();
+	//IDXGIAdapter* pAdapter = NULL;
+	//CDuplicateOutputDx10::GetSpecificAdapter(0, &pAdapter);
+	//bool bRet = m_Directx10Render.Init(hwnd, ptTargetSize, rcClipRect, pAdapter);
+	//SAFE_RELEASE(pAdapter);
+	//bRet = m_Directx10Render.InitModel();
+	//assert(bRet);
+	//bRet = m_Directx10Render.MapTextrue();
+	//assert(bRet);
+	//m_Directx10Render.SetWindowRenderTarget(false);
+	//m_Directx10Render.Render();
+	//m_Directx10Render.CopyFromSwapBackbuffer();
 }
 
 void TestProc::TestPacketParser()
 {
 	string strInfo;
-	CCacheBuffer cache;
+	WUP::CCacheBuffer cache;
 	cache.Init();
-	CPacketWriter writer(&cache);
+	WUP::CPacketWriter writer(&cache);
 
 	BYTE pMsg[] = "abcd";
 	writer.PutStreamBuffer(pMsg, sizeof(pMsg));
@@ -122,7 +133,7 @@ void TestProc::TestPacketParser()
 	strInfo.clear(); cache.GetInfo(strInfo); OutputDebugStringA(strInfo.c_str());
 	OutputDebugStringA("\r\n");
 
-	CPacketParser paser(&cache);
+	WUP::CPacketParser paser(&cache);
 	LPBYTE pContent = NULL;
 	INT cbRead = 0;
 
@@ -169,12 +180,16 @@ void TestProc::CaptureAudio()
 	captureAudioInst.Stop();
 }
 
-void TestProc::testGeme(HWND hwndHP1P, HWND hwndHP2P)
+WUP::CWarriorFight g_warriorFightInst;
+void TestProc::testGeme(HWND hwndHP1P, HWND hwndHP2P, HWND hwndfightBtn)
 {
+	g_warriorFightInst.Init(hwndHP1P, hwndHP2P, hwndfightBtn);
+	g_warriorFightInst.Start();
+}
 
-	CWarriorFight warriorFightInst;
-	warriorFightInst.Init(hwndHP1P, hwndHP2P);
-	warriorFightInst.Fight();
+void TestProc::TestFight()
+{
+	g_warriorFightInst.Fight();
 }
 
 void TestProc::fillContent()
@@ -266,7 +281,7 @@ bool TestProc::TestCacheBuffer()
 	unsigned char resultBuf1[TESTNUM1] = {0};
 	memcpy(resultBuf1, TESTSTR1 , TESTNUM1);
 
-	CCacheBuffer cacheBuffer;
+	WUP::CCacheBuffer cacheBuffer;
 	OutputDebugStringA("\r\n Init");
 	assert(cacheBuffer.Init());
 	string strInfo;

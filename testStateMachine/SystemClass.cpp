@@ -133,7 +133,7 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 	RegisterClassEx(&wc);
 
 	// 窗口模式：800*600.
-	screenWidth = 765;
+	screenWidth = 1000;
 	screenHeight = 569;
 
 	// 窗口位置,posX, posY窗口左上角坐标
@@ -257,7 +257,8 @@ VOID SystemClass::CreateControls()
 
 	CREATEEDIT(m_WFP1HP, TEXT("P1"), EIndexCommonCtrl::eCtrlIndex_WFP1HP);
 	CREATEEDIT(m_WFP2HP, TEXT("P2"), EIndexCommonCtrl::eCtrlIndex_WFP2HP);
-	CREATEBUTTON(m_WFStart, TEXT("fight"), EIndexCommonCtrl::eCtrlIndex_WFTestStart);
+	CREATEBUTTON(m_WFStart, TEXT("游戏开始"), EIndexCommonCtrl::eCtrlIndex_WFTestStart);
+	CREATEBUTTON(m_TestFight, TEXT("fight"), EIndexCommonCtrl::eCtrlIndex_TestFight);
 
 	//----------------------------------------------------------------------------------
 	++irow;
@@ -363,7 +364,11 @@ void SystemClass::SubWndMessageHandler(HWND hwnd, INT umsg, WPARAM wparam, LPARA
 	}
 	else if (wparam == EIndexCommonCtrl::eCtrlIndex_WFTestStart)
 	{
-		m_TestProc.testGeme(m_WFP1HP, m_WFP2HP);
+		m_TestProc.testGeme(m_WFP1HP, m_WFP2HP, m_TestFight);
+	}
+	else if (wparam == EIndexCommonCtrl::eCtrlIndex_TestFight)
+	{
+		m_TestProc.TestFight();
 	}
 	else if (wparam == EIndexCommonCtrl::eCtrlIndex_CaptureAudio)
 	{

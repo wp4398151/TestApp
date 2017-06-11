@@ -10,39 +10,42 @@
 #include "CacheBuffer.h"
 
 #define TOKEN "wup"
-// header
-struct Packet{
-	struct Header{
-		unsigned char tok[4];	// tok = wup
-		UINT cbBodySize;		// without header
-	} header;
-	LPBYTE pbody;				// body
-};
 
-class CPacketParser
+namespace WUP
 {
-public:
-	CPacketParser(CCacheBuffer *pCacheBuffer) :m_pCacheBuffer(pCacheBuffer){ ; }
-	virtual ~CPacketParser();
-public:
+	// header
+	struct Packet{
+		struct Header{
+			unsigned char tok[4];	// tok = wup
+			UINT cbBodySize;		// without header
+		} header;
+		LPBYTE pbody;				// body，其中的内容为Msg协议内容
+	};
 
-	void ReleaseBuffer(LPBYTE pPacketBody);
-	bool GetStreamBuffer(LPBYTE* ppPacketBody, int &cbRead);
-	
-private:
-	CCacheBuffer *m_pCacheBuffer;
+	class CPacketParser
+	{
+	public:
+		CPacketParser(WUP::CCacheBuffer *pCacheBuffer) :m_pCacheBuffer(pCacheBuffer){ ; }
+		virtual ~CPacketParser();
+	public:
+
+		static void ReleaseBuffer(LPBYTE pPacketBody);
+		ReturnStatusAsync GetStreamBuffer(LPBYTE* ppPacketBody, int &cbRead);
+
+	private:
+		CCacheBuffer *m_pCacheBuffer;
+	};
+
+	class CPacketWriter
+	{
+	public:
+		CPacketWriter(CCacheBuffer *pCacheBuffer) :m_pCacheBuffer(pCacheBuffer){ ; }
+		virtual ~CPacketWriter();
+	public:
+		ReturnStatusAsync PutStreamBuffer(LPBYTE ppPacketBody, int cbSize);
+
+	private:
+		CCacheBuffer *m_pCacheBuffer;
+	};
+
 };
-
-class CPacketWriter
-{
-public:
-	CPacketWriter(CCacheBuffer *pCacheBuffer) :m_pCacheBuffer(pCacheBuffer){ ; }
-	virtual ~CPacketWriter();
-public:
-	bool PutStreamBuffer(LPBYTE ppPacketBody, int cbSize);
-
-private:
-	CCacheBuffer *m_pCacheBuffer;
-};
-
-

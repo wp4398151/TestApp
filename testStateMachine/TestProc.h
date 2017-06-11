@@ -20,7 +20,9 @@ public:
 	void CaptureAudio();
 	void Render();
 	void TestDx10(HWND hwnd, POINT& ptTargetSize, POINT& ptCapturePicSize, RECT &rcClipRect);
-	void testGeme(HWND hwndHP1P, HWND hwndHP2P);
+	void testGeme(HWND hwndHP1P, HWND hwndHP2P, HWND hwndfightBtn);
+	void TestFight();
+
 	void TestPacketParser();
 private:	
 	CDirectXWindow m_Directx10Render;

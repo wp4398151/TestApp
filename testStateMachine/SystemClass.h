@@ -8,7 +8,7 @@
 #include <string>
 #include "IUtil.h"
 
-class SystemClass : public LiteThread<SystemClass>
+class SystemClass : public WUP::LiteThread<SystemClass>
 {
 public:
 	SystemClass(void);
@@ -58,6 +58,7 @@ private:
 		eCtrlIndex_CaptureScreenIntel,	// ×¥È¡ÆÁÄ»
 		eCtrlIndex_TestCacheBuffer,		// ²âÊÔCacheBuffer
 		eCtrlIndex_TestPacketParser,	// ²âÊÔPacketParser
+		eCtrlIndex_TestFight,			// ²âÊÔÊÖ¶¯¹¥»÷
 	};
 
 	HWND m_Test1Btn;	
@@ -75,6 +76,7 @@ private:
 	HWND m_CaptureScreenIntel;
 	HWND m_TestCacheBuffer;
 	HWND m_TestPacketParser;
+	HWND m_TestFight;			// ÊÖ¶¯¹¥»÷
 
 	InputClass* m_Input;		// ¼üÅÌÊäÈë
 
