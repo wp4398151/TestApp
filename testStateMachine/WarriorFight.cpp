@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "WarriorFight.h"
 #include "IUtil.h"
-#include "NetMsgControl.h"
 
 namespace WUP{
 	CWarriorFight::CWarriorFight()
@@ -40,83 +39,66 @@ namespace WUP{
 		return true;
 	}
 
-	CRITICAL_SECTION g_netCriticalSec;
-	CCacheBuffer g_msgBuffer;
-	BOOL g_isStop = true;
 
 	bool CWarriorFight::Fight()
 	{
-		if (g_isStop)
+		if (m_isStop)
 		{
 			return true;
 		}
 
-		EnterCriticalSection(&g_netCriticalSec);
+		EnterCriticalSection(&m_netCriticalSec);
 
 		FightMsg fightMsg;
-		CPacketWriter writer(&g_msgBuffer);
+		CPacketWriter writer(&m_msgBuffer);
 		writer.PutStreamBuffer((LPBYTE)&fightMsg, sizeof(fightMsg));
 
-		LeaveCriticalSection(&g_netCriticalSec);
+		LeaveCriticalSection(&m_netCriticalSec);
 
 		return true;
 	}
 
+	void CWarriorFight::InitNet()
+	{
+		InitializeCriticalSection(&m_sessionCacheCriticalSec);
+		InitializeCriticalSection(&m_netCriticalSec);
+
+		m_msgBuffer.Init();
+		m_sessionCacheBuffer.Init();
+		m_netMsgControl.Init(&m_msgBuffer,
+			&m_netCriticalSec,
+			&m_sessionCacheCriticalSec,
+			&m_sessionCacheBuffer, &m_isStop);
+		m_netMsgControl.start();
+	}
+
 	bool CWarriorFight::Start()
 	{
-		g_isStop = g_isStop ? false : true;
+		m_isStop = m_isStop ? false : true;
 
-		if (g_isStop){
+		if (m_isStop){
 			return true;
 		}
 
-		// 启动一个线程用来读取
+		// 启动一个线程用来读取，客户端客户端发来的消息
 		IUtil::SeedRand();
 
-		NetMsgControl netMsgControl;
-
-		CRITICAL_SECTION sessionCacheCriticalSec;
-		CCacheBuffer sessionCacheBuffer;
-
-		InitializeCriticalSection(&sessionCacheCriticalSec);
-		InitializeCriticalSection(&g_netCriticalSec);
-
-		g_msgBuffer.Init();
-		sessionCacheBuffer.Init();
-		netMsgControl.Init(&g_msgBuffer,
-			&g_netCriticalSec,
-			&sessionCacheCriticalSec,
-			&sessionCacheBuffer, &g_isStop);
-		netMsgControl.start();
+		TimeManager::Init();
+		InitNet();
 
 		while (m_Warrior1.IsAlive() && m_Warrior2.IsAlive())
 		{
-			if (g_isStop)
+			TimeManager::RefreshTime();
+			if (m_isStop)
 			{
 				break;
 			}
 
-			UINT curTime = GetTickCount();
-			static UINT lastTime = curTime;
-			UINT timeElapse = curTime - lastTime;
-
-			m_Warrior1.m_curCD -= timeElapse;
-			m_Warrior2.m_curCD -= timeElapse;
-			if (m_Warrior1.m_curCD < 0)
-			{
-				m_Warrior1.m_curCD = 0;
-			}
-
-			if (m_Warrior2.m_curCD < 0)
-			{
-				m_Warrior2.m_curCD = 0;
-			}
+			// 服务器场景事物活动
+			DoHeartBeatObject();
 
 			// 抽取msg
-			ReturnStatusAsync ret = netMsgControl.FetchPacketList();
-
-			DOLOG("test P2 CD:" + to_string(m_Warrior2.m_curCD) 
-				+ ", timeLapse: " + to_string(timeElapse) + " \r\n");
+			ReturnStatusAsync ret = m_netMsgControl.FetchPacketList();
 
 			// Ai 运行
 			if (!m_Warrior2.IsInCD())
@@ -126,7 +108,7 @@ namespace WUP{
 			}
 
 			// 玩家处理模块
-			for (auto pMsg : netMsgControl.m_ListMsg){
+			for (auto pMsg : m_netMsgControl.m_ListMsg){
 				if (pMsg->id == EnumFightMsg)
 				{
 					if (!m_Warrior1.IsInCD())
@@ -139,9 +121,9 @@ namespace WUP{
 			}
 
 			// View反馈,当前仅仅只是显示一下玩家的CD剩余
-			IUtil::SetINT(m_hwndfightBtn, m_Warrior1.m_curCD);
+			INT cdShow = m_Warrior1.m_curCD - TimeManager::GetCurTime();
+			IUtil::SetINT(m_hwndfightBtn, (cdShow>0)?cdShow:0);
 
-			lastTime = curTime;
 			Sleep(15);
 		}
 
@@ -156,11 +138,20 @@ namespace WUP{
 			IUtil::SetText(m_hwndP1Edit, "P1 Dead");
 		}
 
-		if (g_isStop)
+		if (m_isStop)
 		{
 			IUtil::SetText(m_hwndP2Edit, "游戏停止");
 			IUtil::SetText(m_hwndP1Edit, "游戏停止");
 		}
 		return true;
 	}
+
+	void CWarriorFight::DoHeartBeatObject()
+	{
+		for (UINT idx : m_WarriorMngr.m_ObjectIdxList)
+		{
+			// TODO: 做一些和心跳相关的逻辑
+		}
+	}
+
 };

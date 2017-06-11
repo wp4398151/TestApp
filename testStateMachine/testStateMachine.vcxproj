@@ -105,6 +105,7 @@
     <ClInclude Include="IWaveFile.h" />
     <ClInclude Include="NetModule.h" />
     <ClInclude Include="NetMsgControl.h" />
+    <ClInclude Include="ObjectMngr.h" />
     <ClInclude Include="PacketParser.h" />
     <ClInclude Include="ProtoDef.h" />
     <ClInclude Include="Resource.h" />
@@ -135,6 +136,7 @@
     <ClCompile Include="IWaveFile.cpp" />
     <ClCompile Include="NetModule.cpp" />
     <ClCompile Include="NetMsgControl.cpp" />
+    <ClCompile Include="ObjectMngr.cpp" />
     <ClCompile Include="PacketParser.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

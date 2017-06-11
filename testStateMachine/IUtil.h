@@ -97,4 +97,49 @@ namespace WUP{
 		Fatal = 1,		// 致命错误,可能需要停止掉整个正序，或者停止当前会话
 		Skip = 2,		// 忽略本次调用结果,可能出现错误，但不是严重错误
 	};
+
+	////////////////////////////////////////////////////
+	// 时间管理
+	// Wupeng 
+	////////////////////////////////////////////////////
+	class TimeManager
+	{
+	public:
+		static UINT s_curTime;						// 当前时间
+		static UINT s_TimeElapse;					// 当前帧的时间流逝
+		static UINT s_LastTime;						// 上一帧时间
+
+		static inline void Init()
+		{
+			s_curTime = GetTickCount();
+			s_TimeElapse = 0;
+			s_LastTime = s_curTime;
+		}
+
+		static inline void RefreshTime()
+		{
+			s_LastTime = s_curTime;
+			s_curTime = GetTickCount();				// 当前时间
+			s_TimeElapse = s_curTime - s_LastTime;	// 当前帧的时间流逝
+		}
+
+		static inline UINT GetCurTime()
+		{
+			return s_curTime;
+		}
+
+		static inline UINT GetCurElapseTime()
+		{
+			return s_TimeElapse;
+		}
+
+		// 得到未来时间
+		static time_t GetOverDayTime(time_t curTime);
+		static time_t GetOverDayTime();
+		
+		static string PrintTime(time_t atime);
+		static void GetCurTimeStr(string& strTime, time_t atime);
+		static void CurrentDateTimeString(string& strTime);
+		static void CurrentTimeString(string& strTime);
+	};
 }

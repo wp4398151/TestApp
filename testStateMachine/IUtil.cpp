@@ -78,4 +78,73 @@ namespace WUP{
 
 		ReleaseDC(NULL, dcDesk);
 	}
+
+	UINT TimeManager::s_curTime;					// 当前时间
+	UINT TimeManager::s_TimeElapse;					// 当前帧的时间流逝
+	UINT TimeManager::s_LastTime;					// 上一帧时间
+
+	void TimeManager::CurrentDateTimeString(string& strTime)
+	{
+		time_t     now = time(0);
+		struct tm  tstruct;
+		char       buf[80] = { 0 };
+		localtime_s(&tstruct, &now);
+		strftime(buf, sizeof(buf), "%Y-%m-%d, %X: ", &tstruct);
+		strTime = buf;
+	}
+
+	void TimeManager::CurrentTimeString(string& strTime)
+	{
+		time_t     now = time(0);
+		struct tm  tstruct;
+		char       buf[80] = { 0 };
+		localtime_s(&tstruct, &now);
+		strftime(buf, sizeof(buf), "%X: ", &tstruct);
+		strTime = buf;
+	}
+
+	string TimeManager::PrintTime(time_t atime)
+	{
+		tm timeStruct;
+		char buff[32];
+		localtime_s(&timeStruct, &atime);
+		asctime_s(buff, &timeStruct);
+		return string((LPCSTR)buff);
+	}
+
+	void TimeManager::GetCurTimeStr(string& strTime, time_t atime)
+	{
+		tm timeStruct;
+		char buff[32];
+		localtime_s(&timeStruct, &atime);
+		asctime_s(buff, &timeStruct);
+		strTime = buff;
+	}
+
+	time_t TimeManager::GetOverDayTime()
+	{
+		time_t curTime;
+		time(&curTime);
+		tm timeStruct;
+		localtime_s(&timeStruct, &curTime);
+		timeStruct.tm_hour = 0;
+		timeStruct.tm_min = 0;
+		timeStruct.tm_sec = 0;
+		timeStruct.tm_mday += 1;
+		return mktime(&timeStruct);
+	}
+
+	time_t TimeManager::GetOverDayTime(time_t curTime)
+	{
+		tm timeStruct;
+		localtime_s(&timeStruct, &curTime);
+		timeStruct.tm_hour = 0;
+		timeStruct.tm_min = 0;
+		timeStruct.tm_sec = 0;
+		timeStruct.tm_mday += 1;
+		return mktime(&timeStruct);
+	}
+
+
+
 };

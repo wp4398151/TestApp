@@ -44,7 +44,7 @@ namespace WUP{
 		if (!rTargetWarrior.IsAlive()){
 			return;
 		}
-		m_curCD = IUtil::RangedRand(m_cdMin, m_cdMax);
+		m_curCD = IUtil::RangedRand(m_cdMin, m_cdMax) + TimeManager::GetCurTime();
 
 		INT attackVal = IUtil::RangedRand(m_atkMin, m_atkMax);
 		rTargetWarrior.m_curHP -= attackVal;
@@ -53,6 +53,6 @@ namespace WUP{
 
 	bool CWarrior::IsInCD()
 	{
-		return (m_curCD > 0) ? true : false;
+		return (m_curCD > TimeManager::GetCurTime()) ? true : false;
 	}
 };

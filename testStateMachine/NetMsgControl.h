@@ -152,10 +152,8 @@ namespace WUP{
 		CPacketParser* m_pPacketParser;
 
 		BOOL *m_pIsStop;
-
 		MsgList m_ListMsg;
 	public:
 
 	};
-
 };

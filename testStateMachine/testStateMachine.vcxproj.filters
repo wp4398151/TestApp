@@ -19,6 +19,12 @@
     <Filter Include="源文件\protoc">
       <UniqueIdentifier>{26fffac3-1637-44e7-8d92-fdad74fa9f61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\server">
+      <UniqueIdentifier>{b13b01c9-278c-4294-b9a9-c658a9a4982c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\server">
+      <UniqueIdentifier>{82590907-5ba5-452a-9e8b-b11ed131311d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -42,9 +48,6 @@
     <ClInclude Include="InputClass.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="NetModule.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="TestProc.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -63,41 +66,47 @@
     <ClInclude Include="CDuplicateOutputDx11.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="PacketParser.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="IUtil.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="WarriorFight.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="InitAttrs.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="H264IntelEncoder.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="IntelScreenCapture.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Warrior.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="addressbook.pb.h">
       <Filter>头文件\protoc</Filter>
-    </ClInclude>
-    <ClInclude Include="CacheBuffer.h">
-      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="EncodeH264FFMPEG.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="InitAttrs.h">
+      <Filter>头文件\server</Filter>
+    </ClInclude>
+    <ClInclude Include="NetModule.h">
+      <Filter>头文件\server</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketParser.h">
+      <Filter>头文件\server</Filter>
+    </ClInclude>
     <ClInclude Include="ProtoDef.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\server</Filter>
+    </ClInclude>
+    <ClInclude Include="Warrior.h">
+      <Filter>头文件\server</Filter>
+    </ClInclude>
+    <ClInclude Include="WarriorFight.h">
+      <Filter>头文件\server</Filter>
     </ClInclude>
     <ClInclude Include="NetMsgControl.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\server</Filter>
+    </ClInclude>
+    <ClInclude Include="IUtil.h">
+      <Filter>头文件\server</Filter>
+    </ClInclude>
+    <ClInclude Include="CacheBuffer.h">
+      <Filter>头文件\server</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectMngr.h">
+      <Filter>头文件\server</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -111,9 +120,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="InputClass.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="NetModule.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="TestProc.cpp">
@@ -134,38 +140,44 @@
     <ClCompile Include="CDuplicateOutputDx11.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="PacketParser.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="IUtil.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="WarriorFight.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="InitAttrs.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="H264IntelEncoder.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="IntelScreenCapture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Warrior.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="addressbook.pb.cc">
       <Filter>源文件\protoc</Filter>
-    </ClCompile>
-    <ClCompile Include="CacheBuffer.cpp">
-      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="EncodeH264FFMPEG.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CacheBuffer.cpp">
+      <Filter>源文件\server</Filter>
+    </ClCompile>
+    <ClCompile Include="InitAttrs.cpp">
+      <Filter>源文件\server</Filter>
+    </ClCompile>
+    <ClCompile Include="NetModule.cpp">
+      <Filter>源文件\server</Filter>
+    </ClCompile>
     <ClCompile Include="NetMsgControl.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\server</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketParser.cpp">
+      <Filter>源文件\server</Filter>
+    </ClCompile>
+    <ClCompile Include="Warrior.cpp">
+      <Filter>源文件\server</Filter>
+    </ClCompile>
+    <ClCompile Include="WarriorFight.cpp">
+      <Filter>源文件\server</Filter>
+    </ClCompile>
+    <ClCompile Include="IUtil.cpp">
+      <Filter>源文件\server</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectMngr.cpp">
+      <Filter>源文件\server</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
